@@ -1,0 +1,37 @@
+from datetime import datetime
+
+from sqlmodel import SQLModel, Field
+
+
+class User(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str
+    email: str = Field(index=True, unique=True)
+    password_hash: str
+
+
+class Video(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+
+    title: str
+    description: str
+
+    video_url: str
+    thumbnail_url: str
+
+    views: int = 0
+
+    user_id: int = Field(foreign_key="user.id")
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class Comment(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+
+    content: str
+
+    user_id: int = Field(foreign_key="user.id")
+    video_id: int = Field(foreign_key="video.id")
+
+    created_at: datetime = Field(default_factory=datetime.utcnow)
