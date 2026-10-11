@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlmodel import SQLModel, Field
 
@@ -23,7 +23,9 @@ class Video(SQLModel, table=True):
 
     user_id: int = Field(foreign_key="user.id")
 
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
 
 
 class Comment(SQLModel, table=True):
@@ -34,4 +36,6 @@ class Comment(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id")
     video_id: int = Field(foreign_key="video.id")
 
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
